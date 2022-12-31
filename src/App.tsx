@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { createStage } from './utils/gameHelpers';
 import Display from './components/Display';
-import Stage from './components/Stage';
+import Stage from './components/Stage/Stage';
 import StartButton from './components/StartButton';
 
 const StyledTetrisWrapper = styled.div`
