@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Cell from './Cell';
+import Cell from './Cell/Cell';
 import { STAGE_WIDTH, STAGE_HEIGHT } from '../constants/common';
 import { StageType } from '../types/commont';
 

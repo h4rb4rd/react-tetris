@@ -1,14 +1,13 @@
-import { memo } from 'react';
 import styled from 'styled-components';
 
-import { TETROMINOS } from '../constants/common';
+import { TETROMINOS } from '../../constants/common';
 
-type Props = {
+interface StyledCellProps {
   color: string;
   type: keyof typeof TETROMINOS;
-};
+}
 
-const StyledCell = styled.div<Props>`
+export const StyledCell = styled.div<StyledCellProps>`
   width: auto;
   background: rgba(${(props) => props.color}, 0.8);
   border: ${(props) => (props.type === 0 ? '0px solid' : '4px solid')};
@@ -17,13 +16,3 @@ const StyledCell = styled.div<Props>`
   border-top-color: rgba(${(props) => props.color}, 1);
   border-left-color: rgba(${(props) => props.color}, 0.3);
 `;
-
-type CellProps = {
-  type: keyof typeof TETROMINOS;
-};
-
-const Cell = ({ type }: CellProps) => {
-  return <StyledCell type={type} color={TETROMINOS[type].color} />;
-};
-
-export default memo(Cell);
