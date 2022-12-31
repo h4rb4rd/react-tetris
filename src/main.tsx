@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
 
 import App from './App';
-import bg from './assets/bg.jpg';
+import bg from './assets/bg.webp';
 
 const GlobalStyles = createGlobalStyle`
   body {

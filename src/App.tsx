@@ -17,8 +17,9 @@ const StyledTetris = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  margin-top: 100px;
   padding: 40px;
-  margin: 0 auto;
   .display {
     display: flex;
     justify-content: space-between;
