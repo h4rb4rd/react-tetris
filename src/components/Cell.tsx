@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { TETROMINOS } from '../constants/common';
 
 type Props = {
-  type: keyof typeof TETROMINOS;
   color: string;
+  type: keyof typeof TETROMINOS;
 };
 
 const StyledCell = styled.div<Props>`
@@ -18,7 +18,11 @@ const StyledCell = styled.div<Props>`
   border-left-color: rgba(${(props) => props.color}, 0.3);
 `;
 
-const Cell = ({ type }: Props) => {
+type CellProps = {
+  type: keyof typeof TETROMINOS;
+};
+
+const Cell = ({ type }: CellProps) => {
   return <StyledCell type={type} color={TETROMINOS[type].color} />;
 };
 

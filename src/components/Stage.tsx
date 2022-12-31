@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
+import Cell from './Cell';
 import { STAGE_WIDTH, STAGE_HEIGHT } from '../constants/common';
+import { StageType } from '../types/commont';
 
 const StyledStage = styled.div`
   display: grid;
@@ -11,4 +13,12 @@ const StyledStage = styled.div`
   background: #222;
 `;
 
-export default StyledStage;
+type Props = {
+  stage: StageType;
+};
+
+const Stage = ({ stage }: Props) => {
+  return <StyledStage>{stage.map((row) => row.map((cell, i) => <Cell key={i} type={cell[0]} />))}</StyledStage>;
+};
+
+export default Stage;
