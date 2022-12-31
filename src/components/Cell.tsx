@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 
 import { TETROMINOS } from '../constants/common';
@@ -17,4 +18,8 @@ const StyledCell = styled.div<Props>`
   border-left-color: rgba(${(props) => props.color}, 0.3);
 `;
 
-export default StyledCell;
+const Cell = ({ type }: Props) => {
+  return <StyledCell type={type} color={TETROMINOS[type].color} />;
+};
+
+export default memo(Cell);
