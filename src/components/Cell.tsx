@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { TETROMINOS } from '../setup';
+import { TETROMINOS } from '../constants/common';
 
 type Props = {
   type: keyof typeof TETROMINOS;

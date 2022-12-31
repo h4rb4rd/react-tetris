@@ -1,5 +1,5 @@
-import { STAGE_WIDTH, STAGE_HEIGHT } from '../setup';
-import { TETROMINOS } from '../setup';
+import { STAGE_WIDTH, STAGE_HEIGHT } from '../constants/common';
+import { TETROMINOS } from '../constants/common';
 
 export const createStage = () => Array.from(Array(STAGE_HEIGHT), () => Array(STAGE_WIDTH).fill([0, 'clear']));
 
