@@ -37,7 +37,7 @@ function App() {
           {gameOver ? (
             <>
               <Display gameOver={gameOver} text="Game Over!" />
-              <StartButton callback={() => null}></StartButton>
+              <StartButton handleClick={() => console.log('click')}></StartButton>
             </>
           ) : (
             <>
