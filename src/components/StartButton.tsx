@@ -16,4 +16,12 @@ const StyledStartButton = styled.button`
   cursor: pointer;
 `;
 
-export default StyledStartButton;
+type Props = {
+  callback: () => void;
+};
+
+const StartButton = ({ callback }: Props) => {
+  return <StyledStartButton onClick={callback}>Start Game</StyledStartButton>;
+};
+
+export default StartButton;
