@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 type Props = {
   gameOver?: boolean;
+  text?: string;
 };
 
 const StyledDisplay = styled.div<Props>`
@@ -20,4 +21,8 @@ const StyledDisplay = styled.div<Props>`
   font-size: 0.8rem;
 `;
 
-export default StyledDisplay;
+const Display = ({ text, gameOver }: Props) => {
+  return <StyledDisplay gameOver={gameOver}>{text}</StyledDisplay>;
+};
+
+export default Display;
