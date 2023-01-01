@@ -14,7 +14,7 @@ export const StyledDisplay = styled.div<StyledDisplayProps>`
   min-height: 20px;
   width: 120px;
   border-radius: 10px;
-  color: ${(props) => (props.gameOver ? 'red' : '#999')};
+  color: ${(props) => (props.gameOver ? 'tomato' : '#999')};
   background: #000;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.8rem;

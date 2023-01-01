@@ -8,6 +8,7 @@ import StartButton from './components/StartButton';
 import { useInterval } from './hooks/useInterval';
 import { usePlayer } from './hooks/usePlayer';
 import { useStage } from './hooks/useStage';
+import { useGameStatus } from './hooks/useGameStatus';
 
 const StyledTetrisWrapper = styled.div`
   width: 100%;
@@ -17,11 +18,13 @@ const StyledTetrisWrapper = styled.div`
 `;
 
 const StyledTetris = styled.div`
+  position: relative;
+  top: -70px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 100%;
-  margin-top: 10 0px;
   padding: 40px;
   .display {
     display: flex;
@@ -34,7 +37,8 @@ function App() {
   const [dropTime, setDropTime] = useState<null | number>(null);
   const [gameOver, setGameOver] = useState(true);
   const { player, updatePlayerPosition, resetPlayer, playerRotate } = usePlayer();
-  const { stage, setStage } = useStage(player, resetPlayer);
+  const { stage, rowsCleared, setStage } = useStage(player, resetPlayer);
+  const { score, setScore, rows, setRows, level, setLevel } = useGameStatus(rowsCleared);
   const gameAreaRef = useRef<HTMLDivElement>(null);
 
   const movePlayer = (dir: number) => {
@@ -45,7 +49,7 @@ function App() {
 
   const handleKeyUp = ({ keyCode }: { keyCode: number }) => {
     if (keyCode === 40) {
-      setDropTime(1000);
+      setDropTime(1000 / level + 200);
     }
   };
 
@@ -57,10 +61,13 @@ function App() {
     setStage(createStage());
     setDropTime(1000);
     resetPlayer();
+    setScore(0);
+    setLevel(1);
+    setRows(0);
     setGameOver(false);
   };
 
-  const move = ({ keyCode, repeat }: { keyCode: number; repeat: boolean }): void => {
+  const move = ({ keyCode, repeat }: { keyCode: number; repeat: boolean }) => {
     if (!gameOver) {
       if (keyCode === 37) {
         movePlayer(-1);
@@ -77,7 +84,12 @@ function App() {
     }
   };
 
-  const drop = (): void => {
+  const drop = () => {
+    if (rows > level * 10) {
+      setLevel((prev) => prev + 1);
+      setDropTime(1000 / level + 200);
+    }
+
     if (!isColliding(player, stage, { x: 0, y: 1 })) {
       updatePlayerPosition({ x: 0, y: 1, collided: false });
     } else {
@@ -104,9 +116,9 @@ function App() {
             </>
           ) : (
             <>
-              <Display text={`Score: `} />
-              <Display text={`Rows: `} />
-              <Display text={`Level: `} />
+              <Display text={`Score: ${score}`} />
+              <Display text={`Rows: ${rows}`} />
+              <Display text={`Level: ${level}`} />
             </>
           )}
         </div>
