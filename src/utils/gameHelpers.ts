@@ -25,6 +25,5 @@ export const isColliding = (player: PlayerType, stage: StageType, { x: moveX, y:
     }
   }
 
-  // 5. If everything above is false
   return false;
 };

@@ -33,7 +33,7 @@ const StyledTetris = styled.div`
 function App() {
   const [dropTime, setDropTime] = useState<null | number>(null);
   const [gameOver, setGameOver] = useState(true);
-  const { player, updatePlayerPosition, resetPlayer } = usePlayer();
+  const { player, updatePlayerPosition, resetPlayer, playerRotate } = usePlayer();
   const { stage, setStage } = useStage(player, resetPlayer);
   const gameAreaRef = useRef<HTMLDivElement>(null);
 
@@ -72,7 +72,7 @@ function App() {
         }
         setDropTime(30);
       } else if (keyCode === 38) {
-        //  todo
+        playerRotate(stage);
       }
     }
   };
