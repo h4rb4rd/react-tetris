@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { createStage } from './utils/gameHelpers';
+import { createStage, isColliding } from './utils/gameHelpers';
 import Display from './components/Display';
 import Stage from './components/Stage/Stage';
 import StartButton from './components/StartButton';
@@ -37,12 +37,10 @@ function App() {
   const { stage, setStage } = useStage(player, resetPlayer);
   const gameAreaRef = useRef<HTMLDivElement>(null);
 
-  const movePlayer = (direction: number) => {
-    updatePlayerPosition({
-      x: direction,
-      y: 0,
-      collided: false,
-    });
+  const movePlayer = (dir: number) => {
+    if (!isColliding(player, stage, { x: dir, y: 0 })) {
+      updatePlayerPosition({ x: dir, y: 0, collided: false });
+    }
   };
 
   const handleKeyUp = ({ keyCode }: { keyCode: number }) => {
@@ -69,7 +67,6 @@ function App() {
       } else if (keyCode === 39) {
         movePlayer(1);
       } else if (keyCode === 40) {
-        // Just call once
         if (repeat) {
           return;
         }
@@ -80,8 +77,16 @@ function App() {
     }
   };
 
-  const drop = () => {
-    updatePlayerPosition({ x: 0, y: 1, collided: false });
+  const drop = (): void => {
+    if (!isColliding(player, stage, { x: 0, y: 1 })) {
+      updatePlayerPosition({ x: 0, y: 1, collided: false });
+    } else {
+      if (player.position.y < 1) {
+        setGameOver(true);
+        setDropTime(null);
+      }
+      updatePlayerPosition({ x: 0, y: 0, collided: true });
+    }
   };
 
   useInterval(() => {
