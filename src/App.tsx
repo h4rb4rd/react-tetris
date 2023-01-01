@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { createStage } from './utils/gameHelpers';
 import Display from './components/Display';
 import Stage from './components/Stage/Stage';
 import StartButton from './components/StartButton';
+import { useInterval } from './hooks/useInterval';
+import { usePlayer } from './hooks/usePlayer';
+import { useStage } from './hooks/useStage';
 
 const StyledTetrisWrapper = styled.div`
   width: 100%;
@@ -30,15 +33,69 @@ const StyledTetris = styled.div`
 function App() {
   const [dropTime, setDropTime] = useState<null | number>(null);
   const [gameOver, setGameOver] = useState(true);
+  const { player, updatePlayerPosition, resetPlayer } = usePlayer();
+  const { stage, setStage } = useStage(player, resetPlayer);
+  const gameAreaRef = useRef<HTMLDivElement>(null);
+
+  const movePlayer = (direction: number) => {
+    updatePlayerPosition({
+      x: direction,
+      y: 0,
+      collided: false,
+    });
+  };
+
+  const handleKeyUp = ({ keyCode }: { keyCode: number }) => {
+    if (keyCode === 40) {
+      setDropTime(1000);
+    }
+  };
+
+  const handleStartGame = () => {
+    if (gameAreaRef.current) {
+      gameAreaRef.current.focus();
+    }
+
+    setStage(createStage());
+    setDropTime(1000);
+    resetPlayer();
+    setGameOver(false);
+  };
+
+  const move = ({ keyCode, repeat }: { keyCode: number; repeat: boolean }): void => {
+    if (!gameOver) {
+      if (keyCode === 37) {
+        movePlayer(-1);
+      } else if (keyCode === 39) {
+        movePlayer(1);
+      } else if (keyCode === 40) {
+        // Just call once
+        if (repeat) {
+          return;
+        }
+        setDropTime(30);
+      } else if (keyCode === 38) {
+        //  todo
+      }
+    }
+  };
+
+  const drop = () => {
+    updatePlayerPosition({ x: 0, y: 1, collided: false });
+  };
+
+  useInterval(() => {
+    drop();
+  }, dropTime);
 
   return (
-    <StyledTetrisWrapper role="button" tabIndex={0}>
+    <StyledTetrisWrapper ref={gameAreaRef} role="button" tabIndex={0} onKeyDown={move} onKeyUp={handleKeyUp}>
       <StyledTetris>
         <div className="display">
           {gameOver ? (
             <>
               <Display gameOver={gameOver} text="Game Over!" />
-              <StartButton handleClick={() => console.log('click')}></StartButton>
+              <StartButton handleClick={handleStartGame}></StartButton>
             </>
           ) : (
             <>
@@ -48,7 +105,7 @@ function App() {
             </>
           )}
         </div>
-        <Stage stage={createStage()} />
+        <Stage stage={stage} />
       </StyledTetris>
     </StyledTetrisWrapper>
   );
